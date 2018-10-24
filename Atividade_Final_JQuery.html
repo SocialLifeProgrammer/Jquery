@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Atividade jQuery</title>
+    <script src="js/jquery-3.3.1.min.js" charset="utf-8"></script>
+    <script src="js/popper.js" charset="utf-8"></script>
+    <script src="bootstrap/bootstrap.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="bootstrap/bootstrap.css">
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#submit').click( function () {
+
+               let cep = $('#cep').val();
+               let rua = $('#rua').val();
+               let bairro = $('#bairro').val();
+               let curso = $('#curso').val();
+               let especializacao = $('#especializacao').val();
+               let dt_entrada = $('#dt_entrada').val();
+               let dt_saida = $('#dt_saida').val();
+               let funcao = $('#funcao').val();
+               let empresa = $('#empresa').val();
+               let local = $('#local').val();
+               let email = $('#email').val();
+               let senha = $('#senha').val();
+               let cidade = $('#cidade').val();
+               let nome = $('#nome').val();
+               let estado = $('#uf').val();
+
+               if(cep == ""){
+                $('#erro').attr('hidden', false);
+               }if(rua == ""){
+                $('#erro').attr('hidden', false);
+               }if(curso == ""){
+                $('#erro').attr('hidden', false);
+               }if(local == ""){
+                $('#erro').attr('hidden', false);
+               }if(dt_entrada == ""){
+                $('#erro').attr('hidden', false);
+               }if(dt_saida == ""){
+                $('#erro').attr('hidden', false);
+               }if(email == ""){
+                $('#erro').attr('hidden', false);
+               }if(senha == ""){
+                $('#erro').attr('hidden', false);
+               }
+               else{
+                    $('#erro').attr('hidden', true);
+
+                    alert('Cadastrado!')
+
+
+                    if($("<tr><td>"+nome+"</td><td>"+cidade+"</td><td>"+email+"</td></tr>" ).insertAfter( "#linha1" )){
+                        $("#dados").attr('hidden', false);
+
+               $('#cep').val("");
+               $('#rua').val("");
+               $('#curso').val("");
+               $('#especializacao').val("");
+               $('#dt_entrada').val("");
+               $('#dt_saida').val("");
+               $('#funcao').val("");
+               $('#empresa').val("");
+               $('#local').val("");
+               $('#email').val("");
+               $('#senha').val("");
+               $('#cidade').val("");
+               $('#bairro').val("");
+               $('#uf').val("");
+               $('#nome').val("");
+
+                    }
+
+                }
+
+            });
+
+            function limpa_formulário_cep() {
+                $("#rua").val("");
+                $("#bairro").val("");
+                $("#cidade").val("");
+                $("#uf").val("");
+            }
+
+            $("#cep").blur(function () {
+
+                var cep = $(this).val().replace(/\D/g, '');
+
+                if (cep != "") {
+
+                    var validacep = /^[0-9]{8}$/;
+
+                    if (validacep.test(cep)) {
+
+                        $("#rua").val("...");
+                        $("#bairro").val("...");
+                        $("#cidade").val("...");
+                        $("#uf").val("...");
+                        $("#ibge").val("...");
+
+                        $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
+
+                            if (!("erro" in dados)) {
+                                $("#rua").val(dados.logradouro);
+                                $("#bairro").val(dados.bairro);
+                                $("#cidade").val(dados.localidade);
+                                $("#uf").val(dados.uf);
+                            } 
+                            else {
+                                limpa_formulário_cep();
+                                alert("CEP não encontrado.");
+                            }
+                        });
+                    } 
+                    else {
+                        limpa_formulário_cep();
+                        alert("Formato de CEP inválido.");
+                    }
+                } 
+                else {
+                    limpa_formulário_cep();
+                }
+            });
+
+        });
+    </script>
+</head>
+<body>
+
+<div class="container">
+
+    <h2 class="border-bottom border-primary">Atividade jQuery</h2>
+
+    <div class="row">
+
+        <div class="col-sm my-3 p-3 border rounded">
+
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
+                       aria-controls="nav-home" aria-selected="true">Endereço</a>
+                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+                       aria-controls="nav-profile" aria-selected="false">Formação Acadêmica</a>
+                    <a class="nav-item nav-link" id="nav-profile-tab2" data-toggle="tab" href="#nav-profile2" role="tab"
+                       aria-controls="nav-profile2" aria-selected="false">Perfil Professional</a>
+                    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
+                       aria-controls="nav-contact" aria-selected="false">Informações de Contato</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <form method="get" action="" name="cadastro">
+
+                    <label>Cep:
+                            <input name="cep" class="form-group form-control" type="text" id="cep" value="" size="10"
+                                   maxlength="9" required/></label><br/>
+                        <label>Rua:
+                            <input name="rua" required class="form-group form-control" type="text" id="rua"
+                                   size="60"/></label><br/>
+                        <label>Bairro:
+                            <input name="bairro" class="form-group form-control" type="text" id="bairro"
+                                   size="40"/></label><br/>
+                        <label>Cidade:
+                            <input name="cidade" class="form-group form-control" type="text" id="cidade"
+                                   size="40"/></label><br/>
+                        <label>Estado:
+                            <input name="uf" class="form-group form-control" type="text" id="uf" size="2"/></label><br/>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <label>Curso Superior:
+                        <input name="curso" class="form-group form-control" type="text" id="curso" value="" size="10"
+                               maxlength="9" required/></label><br/>
+                    <label>Especialização:
+                        <input name="especializacao" required class="form-group form-control" type="text" id="especializacao"
+                               size="60"/></label><br/>
+                    <label>Local:
+                        <input name="local" required class="form-group form-control" type="text" id="local"
+                               size="60"/></label><br/>
+                </div>
+                <div class="tab-pane fade" id="nav-profile2" role="tabpanel" aria-labelledby="nav-profile-tab2">
+                    <label>Nome:
+                        <input name="nome" class="form-group form-control" type="text" id="nome" 
+                               required/></label><br/>
+                    <label>Data de Entrada:
+                        <input name="dt_entrada" class="form-group form-control" type="text" id="dt_entrada" value="" size="10"
+                               maxlength="9" required/></label><br/>
+                    <label>Data de Saida:
+                        <input name="dt_saida" required class="form-group form-control" type="text" id="dt_saida"
+                               size="60"/></label><br/>
+                    <label>Função:
+                        <input name="funcao" required class="form-group form-control" type="text" id="funcao"
+                               size="60"/></label><br/>
+                    <label>Empresa:
+                        <input name="empresa" required class="form-group form-control" type="text" id="empresa"
+                               size="60"/></label><br/>
+                </div>
+                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    <label>E-mail:
+                        <input name="email" class="form-group form-control" type="text" id="email" value=""
+                               maxlength="9" required/></label><br/>
+                    <label>Senha:
+                        <input name="senha" type="password" required class="form-group form-control" type="text" id="senha"/></label><br/>
+                <button class="btn btn-default" id="submit">Enviar</button>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+    <div class="alert alert-danger" role="alert" id="erro" hidden="hidden">
+        Favor, rever os campos obrigatórios. 
+    </div>
+    <div id="dados" hidden="hidden">
+        <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Cidade</th>
+                <th scope="col">Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="linha1">
+              </tr>
+            </tbody>
+          </table>
+    </div>
+</div>
+
+</body>
+</html>
